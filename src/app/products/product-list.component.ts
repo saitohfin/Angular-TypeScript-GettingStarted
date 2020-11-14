@@ -7,40 +7,61 @@ import { IProduct } from './product';
   styleUrls: ['./product-list.component.css']
 })
 
-export class ProductListComponent implements OnInit{
+export class ProductListComponent implements OnInit {
   title: string = 'Product List';
   imageWidth: number = 50;
   imageMargin: number = 2;
   showImage: boolean = false;
-  listFilter: string = 'cart';
+  _listFilter: string = 'cart';
+  filteredProducts: IProduct[];
   products: IProduct[] = [
     {
-      "productId": 2,
-      "productName": "Garden Cart",
-      "productCode": "GDN-0023",
-      "releaseDate": "March 18, 2019",
-      "description": "15 gallon capacity rolling garden cart",
-      "price": 32.99,
-      "starRating": 4.2,
-      "imageUrl": "assets/images/garden_cart.png"
+      'productId': 2,
+      'productName': 'Garden Cart',
+      'productCode': 'GDN-0023',
+      'releaseDate': 'March 18, 2019',
+      'description': '15 gallon capacity rolling garden cart',
+      'price': 32.99,
+      'starRating': 4.2,
+      'imageUrl': 'assets/images/garden_cart.png'
     },
     {
-      "productId": 5,
-      "productName": "Hammer",
-      "productCode": "TBX-0048",
-      "releaseDate": "May 21, 2019",
-      "description": "Curved claw steel hammer",
-      "price": 8.9,
-      "starRating": 4.8,
-      "imageUrl": "assets/images/hammer.png"
+      'productId': 5,
+      'productName': 'Hammer',
+      'productCode': 'TBX-0048',
+      'releaseDate': 'May 21, 2019',
+      'description': 'Curved claw steel hammer',
+      'price': 8.9,
+      'starRating': 4.8,
+      'imageUrl': 'assets/images/hammer.png'
     }
   ];
 
-  toggleImage(): void{
+  constructor(){
+    this.filteredProducts = this.products;
+    this.listFilter = 'cart';
+  }
+  get listFilter(): string {
+    return this._listFilter;
+  }
+
+  set listFilter(value: string) {
+    this._listFilter = value;
+    this.filteredProducts = this.listFilter ? this.performFilter(this.listFilter) : this.products;
+  }
+
+  toggleImage(): void {
     this.showImage = !this.showImage;
   }
 
-  ngOnInit(): void{
+  ngOnInit(): void {
     console.log('In OnInit');
+  }
+
+  private performFilter(filterBy: string): IProduct[] {
+    filterBy = filterBy.toLocaleLowerCase();
+    return this.products.filter((product: IProduct) =>
+      product.productName.toLocaleLowerCase().indexOf(filterBy) !== -1
+    );
   }
 }
