@@ -37,10 +37,15 @@ export class ProductListComponent implements OnInit {
     }
   ];
 
-  constructor(){
+  onRatingClicked(message: string): void {
+    this.title = 'Product List: ' + message;
+  }
+
+  constructor() {
     this.filteredProducts = this.products;
     this.listFilter = 'cart';
   }
+
   get listFilter(): string {
     return this._listFilter;
   }
