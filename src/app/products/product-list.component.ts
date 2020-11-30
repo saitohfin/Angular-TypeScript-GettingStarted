@@ -17,6 +17,7 @@ export class ProductListComponent implements OnInit {
   _listFilter: string = '';
   filteredProducts: IProduct[];
   products: IProduct[];
+  errorMessage: string;
 
   onRatingClicked(message: string): void {
     this.title = 'Product List: ' + message;
@@ -40,8 +41,13 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('In OnInit');
-    this.products = this.productService.getProducts();
-    this.filteredProducts = this.products;
+    this.productService.getProducts().subscribe({
+      next: products => {
+        this.products = products;
+        this.filteredProducts = this.products;
+      },
+      error: err => this.errorMessage = err
+    });
   }
 
   private performFilter(filterBy: string): IProduct[] {
